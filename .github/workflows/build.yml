@@ -29,12 +29,33 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y git wget
 
+    - name: Find latest Minecraft 1.21.x version
+      id: minecraft_version
+      run: |
+        echo "Fetching Spigot versions directory..."
+        VERSIONS_HTML=$(wget -qO- https://hub.spigotmc.org/versions/)
+        
+        echo "Looking for latest 1.21.x version..."
+        LATEST_VERSION=$(echo "$VERSIONS_HTML" | grep -oE '1\.21\.[0-9]+\.json' | \
+          sed 's/\.json$//' | \
+          sort -V | \
+          tail -1)
+        
+        if [ -z "$LATEST_VERSION" ]; then
+          echo "No 1.21.x version found, falling back to latest"
+          LATEST_VERSION="latest"
+        else
+          echo "Found latest 1.21.x version: $LATEST_VERSION"
+        fi
+        
+        echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+
     - name: Download and run BuildTools
       run: |
         mkdir -p build
         cd build
         wget -O BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-        java -jar BuildTools.jar --rev latest
+        java -jar BuildTools.jar --rev ${{ steps.minecraft_version.outputs.version }}
         ls -la spigot-*.jar
         cp spigot-*.jar ../spigot.jar
 
@@ -63,7 +84,7 @@ jobs:
         images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
           type=raw,value=latest
-          type=raw,value=${{ steps.version.outputs.version }}
+          type=raw,value=${{ steps.minecraft_version.outputs.version }}
           type=raw,value={{date 'YYYYMMDD-HHmmss'}}
 
     - name: Build and push Docker image
