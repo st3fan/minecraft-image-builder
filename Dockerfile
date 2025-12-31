@@ -1,4 +1,4 @@
-FROM openjdk:21-slim-bookworm
+FROM openjdk:26-ea-21-slim-bookworm
 
 RUN useradd -u 1000 -d /data -m minecraft
 
