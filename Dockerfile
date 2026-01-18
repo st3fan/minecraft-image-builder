@@ -1,4 +1,4 @@
-FROM openjdk:25-ea-jdk-bookworm
+FROM eclipse-temurin:21-jdk-jammy
 
 RUN useradd -u 1000 -d /data -m minecraft
 
@@ -13,6 +13,8 @@ VOLUME ["/data"]
 
 ENV MINECRAFT_MEMORY=4G
 ENV MINECRAFT_PORT=25565
+
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 EXPOSE 25565
 EXPOSE 25575
