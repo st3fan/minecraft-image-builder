@@ -21,4 +21,4 @@ EXPOSE 25575
 
 USER minecraft
 
-CMD ["sh", "-c", "cd /data && /usr/local/openjdk-21/bin/java -Xmx${MINECRAFT_MEMORY} -Xms${MINECRAFT_MEMORY} -jar /minecraft/spigot.jar nogui"]
+CMD ["sh", "-c", "cd /data && /opt/java/openjdk/bin/java -Xmx${MINECRAFT_MEMORY} -Xms${MINECRAFT_MEMORY} -jar /minecraft/spigot.jar nogui"]
