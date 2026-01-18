@@ -1,4 +1,4 @@
-FROM amazoncorretto:21-jre-bookworm-slim
+FROM eclipse-temurin:21.0.9_10-jdk-noble
 
 RUN useradd -u 1000 -d /data -m minecraft
 
