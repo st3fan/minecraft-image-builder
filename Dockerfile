@@ -1,4 +1,4 @@
-FROM eclipse-temurin:21.0.9_10-jdk-noble
+FROM openjdk:25-ea-jdk-bookworm
 
 RUN useradd -u 1000 -d /data -m minecraft
 
